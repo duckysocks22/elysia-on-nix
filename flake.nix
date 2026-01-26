@@ -18,6 +18,6 @@
     };
 
   in {
-    packages.x86_64-linux.default = pkgs.callPackage ./wrapElysia.nix { inherit fenixLib; inherit skiaBinaries; };
+    packages.x86_64-linux.default = pkgs.callPackage ./modules/wrapElysia.nix { inherit fenixLib; inherit skiaBinaries; };
   };
 }
