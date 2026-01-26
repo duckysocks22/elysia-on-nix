@@ -4,7 +4,7 @@
 
 *A launcher for anime games on Linux, supporting Wine and Proton* 💕
 
-<img src="assets/images/ak-e.png" alt="Launcher" width="600"/>
+<img src="assets/pictures/ak-e.png" alt="Launcher" width="600"/>
 
 > ⚠️ Elysia is still in very early development! Please report any issues. ⚠️
 
