@@ -16,12 +16,27 @@
 
 ## Installation
 
-### NixOS
+### NixOS Flakes
 
+Add the following to your flake.nix inputs
 ```
-yay -S elysia-bin
+elysia = {
+  url = "git+https://dawn.wine/foxtrottt/elysia-on-nix/";
+  inputs.nixpkgs.follows = "nixpkgs";
+};
 ```
-
+Then add the following
+```
+environment.systemPackages = [
+  inputs.elysia.packages.x86_64-linux.default
+  ];
+```
+or, if you prefer it under Home-Manager
+```
+home.packages = [
+  inputs.elysia.packages.x86_64-linux.default
+  ];
+```
 
 
 
