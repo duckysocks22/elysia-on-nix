@@ -8,7 +8,7 @@
 
 > ⚠️ Elysia is still in very early development! Please report any issues. ⚠️
 
-<img src="assets/elysia.png" alt="Elysia Launcher" width="200"/>
+<img src="assets/elysia-on-nix.png" alt="Elysia Launcher" width="200"/>
 
 </div>
 
