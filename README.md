@@ -8,7 +8,7 @@
 
 > ⚠️ Elysia is still in very early development! Please report any issues. ⚠️
 
-> ⚠️ This specific package is communnity managed ⚠️
+> ⚠️ This specific package is community managed ⚠️
 
 <img src="assets/elysia-on-nix.png" alt="Elysia Launcher" width="200"/>
 
