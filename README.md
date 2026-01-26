@@ -1,12 +1,14 @@
 <div align="center">
 
-# elysia
+# elysia-on-nix
 
-*A launcher for anime games on Linux, supporting Wine and Proton* 💕
+*The launcher for anime games on Linux, packaged for NixOS!* 💕
 
 <img src="assets/pictures/ak-e.png" alt="Launcher" width="600"/>
 
 > ⚠️ Elysia is still in very early development! Please report any issues. ⚠️
+
+> ⚠️ This specific package is communnity managed ⚠️
 
 <img src="assets/elysia-on-nix.png" alt="Elysia Launcher" width="200"/>
 
@@ -14,27 +16,14 @@
 
 ## Installation
 
-### Flatpak
-
-You can grab the latest `elysia.flatpak` from the [Releases](https://dawn.wine/elysia/elysia/releases) page and install it by double clicking it, or with `flatpak install elysia.flatpak`.
-
-### AUR
+### NixOS
 
 ```
 yay -S elysia-bin
 ```
 
-### Native binary / Build from source
 
-Note that you'll need `ffmpeg>=8.0` for Elysia to build correctly.
 
-```
-git clone https://dawn.wine/elysia/elysia.git
-cd elysia
-cargo build --release --bin elysia
-```
-
----
 
 ## Support
 
