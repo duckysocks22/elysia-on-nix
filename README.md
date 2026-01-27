@@ -42,4 +42,6 @@ home.packages = [
 
 ## Support
 
-Elysia is still very work-in-progress: if you meet any bugs, please make an issue or ask for help at [our discord server!](https://discord.gg/ck37X6UWBp)
+>Elysia is still very work-in-progress: if you meet any bugs, please make an issue or ask for help at [our discord server!](https://discord.gg/ck37X6UWBp)
+
+✨ Special thanks to https://github.com/ezKEa for helping me with some troubleshooting 
