@@ -46,7 +46,7 @@ in
 [Desktop Entry]
 Name=Elysia
 Comment=Universal anime game launcher
-Exec=elysia
+Exec=${elysia}/bin/elysia
 Icon=elysia
 Terminal=false
 Type=Application
