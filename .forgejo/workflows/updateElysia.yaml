@@ -78,6 +78,6 @@ jobs:
           
           git add .
           git commit -m "chore: bump elysia to $NEW_VER"
-          git push origin "$BRANCH_NAME"
+          git push origin "$BRANCH_NAME" --force-with-lease
 
           nix-shell -p tea --run "tea pr create --title 'Bump Elysia to $VERSION' --body 'Automated update' --head $BRANCH_NAME"
