@@ -34,6 +34,10 @@ jobs:
       - name: Update Nix File and Hash
         run: |
           apt update && apt install -y jq curl git
+
+          . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+          nix-channel --update
+          nix-env -iA nixpkgs.nix-prefetch-git
           
           RAW_TAG=$(curl -s https://dawn.wine/api/v1/repos/elysia/elysia/releases/latest | jq -r .tag_name)
           CLEAN_VERSION=${RAW_TAG#v}
