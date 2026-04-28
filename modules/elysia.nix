@@ -5,7 +5,7 @@
 	version = "0.2";
         src = fetchgit {
           url = "https://dawn.wine/elysia/elysia.git";
-	  rev = "v0.2";
+	  rev = "ed14268de40fa214f5b86e5de0fd5c4e2c58baf5";
 	  hash = "sha256-S3LrJrm4FmSCE1xl0ElNI9q4WUgzx3zJDqBQbCOPAEs=";
 	};
 
