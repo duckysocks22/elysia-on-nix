@@ -1,0 +1,54 @@
+on:
+
+jobs:
+  update-elysia:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        run: |
+          apt update
+          apt install -y curl
+          curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | \
+          sh -s -- install --no-confirm --extra-conf "trusted-users = $(whoami)" "experimental-features = nix-command flakes"
+          . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+
+      - name: Get Latest Version from Source
+        id: get_version
+        run: |
+          LATEST_TAG=$(curl -s https://https://dawn.wine/elysia/elysia/releases/latest | jq -r .tag_name)
+          VERSION=${LATEST_TAG#v}
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Update Nix File and Hash
+        run: |
+          # Install nix-update temporarily
+          nix shell nixpkgs#nix-update --command \
+            nix-update --version "${{ steps.get_version.outputs.VERSION }}" --flake elysia
+
+      - name: Verify Build
+        run: nix build .#elysia
+
+      - name: Create Pull Request
+        env:
+          GITHUB_TOKEN: ${{ secrets.FORGEJO_TOKEN }}
+        run: |
+          NEW_VER="${{ steps.update_version.outputs.NEW_VERSION }}"
+          BRANCH_NAME="update-elysia-v$NEW_VER"
+          
+          git config user.name "nix-bot"
+          git config user.email "bot@puppygirls.net"
+          
+          git checkout -b "$BRANCH_NAME"
+          git add .
+          git commit -m "chore: bump elysia to $NEW_VER"
+          git push origin "$BRANCH_NAME"
+
+          # Forgejo and GitHub CLI (gh) can often be used to open PRs
+          gh pr create --title "Bump Elysia to $NEW_VER" --body "Automated version bump and build verification." --head "$BRANCH_NAME" --base dev
