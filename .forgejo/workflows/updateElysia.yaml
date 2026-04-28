@@ -50,7 +50,7 @@ jobs:
           nix flake update
 
       - name: Verify Build
-        run: nix build -L --bin elysia
+        run: nix build -L .
 
       - name: Create Pull Request
         env:
