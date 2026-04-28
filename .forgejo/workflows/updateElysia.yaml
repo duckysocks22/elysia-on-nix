@@ -61,11 +61,19 @@ jobs:
           
           git config user.name "nix-bot"
           git config user.email "bot@puppygirls.net"
+
+          git fetch origin
+
+          if git ls-remote --heads origin "$BRANCH_NAME" | grep -q "$BRANCH_NAME"; then
+            echo "Branch exists remotely, checking out and resetting..."
+            git checkout "$BRANCH_NAME"
+            git reset --hard origin/"$BRANCH_NAME"
+          else
+            git checkout -b "$BRANCH_NAME"
+          fi
           
-          git checkout -b "$BRANCH_NAME"
           git add .
           git commit -m "chore: bump elysia to $NEW_VER"
           git push origin "$BRANCH_NAME"
 
-          # Forgejo and GitHub CLI (gh) can often be used to open PRs
-          gh pr create --title "Bump Elysia to $NEW_VER" --body "Automated version bump and build verification." --head "$BRANCH_NAME" --base dev
+          nix-shell -p tea --run "tea pr create --title 'Bump Elysia to $VERSION' --body 'Automated update' --head $BRANCH_NAME"
