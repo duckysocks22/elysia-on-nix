@@ -62,29 +62,20 @@ jobs:
         run: |
           apt install -y git
           NEW_VER="${{ steps.get_version.outputs.VERSION }}"
-          BRANCH_NAME="dev"
+          # Define the source for the PR
+          BRANCH_NAME="update-elysia-v$NEW_VER"
 
-          echo "Creating PR for elysia v$VERSION"
-          
-          git config user.name "nix-bot"
-          git config user.email "bot@puppygirls.net"
-
-          git stash
-
+          # Switch to the new branch BEFORE making changes
           git fetch origin
+          git checkout -b "$BRANCH_NAME" || (git checkout "$BRANCH_NAME" && git reset --hard origin/master)
 
-          if git ls-remote --heads origin "$BRANCH_NAME" | grep -q "$BRANCH_NAME"; then
-            echo "Branch exists remotely, checking out and resetting..."
-            git checkout "$BRANCH_NAME"
-            git reset --hard origin/"$BRANCH_NAME"
-          else
-            git checkout -b "$BRANCH_NAME"
-          fi
-
-          git stash pop
-          
+          # Push the new branch to the remote
           git add .
-          git commit -m "chore: bump elysia to v$NEW_VER"
-          git push origin "$BRANCH_NAME" --force-with-lease
+          git commit -m "chore: bump elysia to $NEW_VER"
+          git push origin "$BRANCH_NAME" --force
 
-          nix-shell -p tea --run "tea pr create --title 'Bump Elysia to v$NEW_VER' --body 'Automated update' --head $BRANCH_NAME"
+          # Create the PR from the new branch into master
+          nix-run nixpkgs#tea -- pr create \
+            --head "$BRANCH_NAME" \
+            --base "master" \
+            --title "Update Elysia to $NEW_VER"
