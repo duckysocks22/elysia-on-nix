@@ -1,0 +1,83 @@
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  update-elysia:
+    runs-on: ubuntu-latest
+    if: github.ref_name == 'master' || github.event_name == 'workflow_dispatch'
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        run: |
+          apt update
+          apt install -y curl
+          curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | \
+          sh -s -- install --no-confirm --extra-conf "trusted-users = $(whoami)" "experimental-features = nix-command flakes"
+          . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+
+      - name: Get Latest Version from Source
+        id: get_version
+        run: |
+          apt install -y jq
+          LATEST_TAG=$(curl -s https://dawn.wine/api/v1/repos/elysia/elysia/releases/latest | jq -r .tag_name)
+          VERSION=${LATEST_TAG#v}
+          echo "Read version as v$VERSION"
+
+      - name: Update Nix File and Hash
+        run: |
+          apt update && apt install -y jq curl git
+          
+          RAW_TAG=$(curl -s https://dawn.wine/api/v1/repos/elysia/elysia/releases/latest | jq -r .tag_name)
+          CLEAN_VERSION=${RAW_TAG#v}
+          
+          PREFETCH_JSON=$(nix run nixpkgs#nix-prefetch-git -- --url https://dawn.wine/elysia/elysia.git --rev "$RAW_TAG")
+          COMMIT_HASH=$(echo $PREFETCH_JSON | jq -r .rev)
+          SHA256=$(echo $PREFETCH_JSON | jq -r .sha256)
+
+          sed -i "s/version = \".*\";/version = \"$CLEAN_VERSION\";/" ./modules/elysia.nix
+          sed -i "s/rev = \".*\";/rev = \"$COMMIT_HASH\";/" ./modules/elysia.nix
+          sed -i "s/sha256 = \".*\";/sha256 = \"$SHA256\";/" ./modules/elysia.nix
+ 
+          nix flake update
+
+      - name: Verify Build
+        run: nix build -L .
+
+      - name: Create Pull Request
+        env:
+          GITHUB_TOKEN: ${{ secrets.FORGEJO_TOKEN }}
+        run: |
+          apt install -y git
+          NEW_VER="${{ steps.get_version.outputs.VERSION }}"
+          # Define the source for the PR
+          BRANCH_NAME="update-elysia-v$NEW_VER"
+
+          git config user.name "nix-bot"
+          git config user.email "bot@puppygirls.net"
+
+          git add modules/elysia.nix flake.lock
+
+          # 4. Only commit and push if the file actually changed
+          git add modules/elysia.nix flake.lock
+          if git diff --cached --exit-code; then
+              echo "No changes detected. Version is already current."
+              exit 0
+          else
+              git commit -m "chore: bump elysia to $NEW_VER"
+              # Use --force to overwrite the remote update branch (Fixes image_ecd303.png)
+              git push origin "$BRANCH_NAME" --force
+    
+              # 5. Create the PR using tea (Fixes image_ecc81a.png)
+              nix run nixpkgs#tea -- pr create \
+                --title "Bump Elysia to $NEW_VER" \
+                --description "Automated update for NixOS nodes." \
+                --head "$BRANCH_NAME" --base master
+          fi
