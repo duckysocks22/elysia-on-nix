@@ -24,4 +24,17 @@ jobs:
         . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
   
     - name: Build Elysia
-      run: nix build .#packages.x86_64-linux.default
+      
+      run: |
+        for i in {1..3}; do
+            echo "Attempt $i..."
+            nix build .#packages.x86_64-linux.default && break || {
+              if [ $i -lt 3 ]; then
+                echo "Build failed, retrying in 5 seconds..."
+                sleep 5
+              else
+                echo "Build failed after $i attempts."
+                exit 1
+              fi
+            }
+          done
