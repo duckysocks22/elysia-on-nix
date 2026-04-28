@@ -55,6 +55,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.FORGEJO_TOKEN }}
         run: |
+          apt install -y git
           NEW_VER="${{ steps.update_version.outputs.NEW_VERSION }}"
           BRANCH_NAME="update-elysia-v$NEW_VER"
           
