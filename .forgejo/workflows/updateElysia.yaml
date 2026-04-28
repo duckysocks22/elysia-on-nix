@@ -29,7 +29,7 @@ jobs:
           apt install -y jq
           LATEST_TAG=$(curl -s https://dawn.wine/api/v1/repos/elysia/elysia/releases/latest | jq -r .tag_name)
           VERSION=${LATEST_TAG#v}
-          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+          echo "VERSION=$VERSION" >> $NEW_VERSION
 
       - name: Update Nix File and Hash
         run: |
