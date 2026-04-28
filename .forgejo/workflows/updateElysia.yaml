@@ -27,7 +27,7 @@ jobs:
         id: get_version
         run: |
           apt install -y jq
-          LATEST_TAG=$(curl -s https://dawn.wine/elysia/elysia/releases/latest | jq -r .tag_name)
+          LATEST_TAG=$(curl -s https://dawn.wine/api/v1/repos/elysia/elysia/releases/latest | jq -r .tag_name)
           VERSION=${LATEST_TAG#v}
           echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
 
