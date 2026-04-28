@@ -26,6 +26,7 @@ jobs:
       - name: Get Latest Version from Source
         id: get_version
         run: |
+          apt install -y jq
           LATEST_TAG=$(curl -s https://dawn.wine/elysia/elysia/releases/latest | jq -r .tag_name)
           VERSION=${LATEST_TAG#v}
           echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
