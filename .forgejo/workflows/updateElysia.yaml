@@ -65,6 +65,9 @@ jobs:
           # Define the source for the PR
           BRANCH_NAME="update-elysia-v$NEW_VER"
 
+          git config --global user.email "bot@puppygirls.net"
+          git config --global user.name "prometheus"
+
           # Switch to the new branch BEFORE making changes
           git fetch origin
           git checkout -b "$BRANCH_NAME" || (git checkout "$BRANCH_NAME" && git reset --hard origin/master)
