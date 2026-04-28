@@ -1,4 +1,7 @@
 on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
 
 jobs:
   update-elysia:
@@ -33,7 +36,7 @@ jobs:
             nix-update --version "${{ steps.get_version.outputs.VERSION }}" --flake elysia
 
       - name: Verify Build
-        run: nix build .#elysia
+        run: nix build .#packages.x86_64-linux.default
 
       - name: Create Pull Request
         env:
