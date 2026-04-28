@@ -12,11 +12,15 @@ jobs:
       pull-requests: write
     runs-on: ubuntu-latest
     steps:
-    - run: |
-        apt update
-        apt install -y curl
-        curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | \
-        sh -s -- install --no-confirm --extra-conf "trusted-users = $(whoami)" "experimental-features = nix-command flakes"
-        . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-        nix build elysia
-        
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Install Nix
+        uses: determinatesystems/nix-installer-action@main
+        with:
+          extra-conf: |
+            trusted-users = runner
+            experimental-features = nix-command flakes
+  
+    - name: Build Elysia
+      run: nix build .#elysia
