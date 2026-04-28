@@ -65,30 +65,24 @@ jobs:
           # Define the source for the PR
           BRANCH_NAME="update-elysia-v$NEW_VER"
 
-          git config --global user.email "bot@puppygirls.net"
-          git config --global user.name "prometheus"
-
-          git stash
-
-          # Switch to the new branch BEFORE making changes
-          git fetch origin
-          git checkout -b "$BRANCH_NAME" || (git checkout "$BRANCH_NAME" && git reset --hard origin/master)
-
-          git stash pop
+          git config user.name "nix-bot"
+          git config user.email "bot@puppygirls.net"
 
           git add modules/elysia.nix flake.lock
-          # Push the new branch to the remote
+
+          # 4. Only commit and push if the file actually changed
+          git add modules/elysia.nix flake.lock
           if git diff --cached --exit-code; then
-            echo "No changes detected. Version is already current."
-            exit 0
+              echo "No changes detected. Version is already current."
+              exit 0
           else
-            git commit -m "chore: bump elysia to $NEW_VER"
-            # Use --force to overwrite the remote update branch (Fixes image_ecd303.png)
-            git push origin "$BRANCH_NAME" --force
+              git commit -m "chore: bump elysia to $NEW_VER"
+              # Use --force to overwrite the remote update branch (Fixes image_ecd303.png)
+              git push origin "$BRANCH_NAME" --force
     
-            # 5. Create the PR using tea (Fixes image_ecc81a.png)
-            nix run nixpkgs#tea -- pr create \
-              --title "Bump Elysia to $NEW_VER" \
-              --description "Automated update for NixOS nodes." \
-              --head "$BRANCH_NAME" --base master
+              # 5. Create the PR using tea (Fixes image_ecc81a.png)
+              nix run nixpkgs#tea -- pr create \
+                --title "Bump Elysia to $NEW_VER" \
+                --description "Automated update for NixOS nodes." \
+                --head "$BRANCH_NAME" --base master
           fi
