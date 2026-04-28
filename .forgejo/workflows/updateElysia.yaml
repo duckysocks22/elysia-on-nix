@@ -4,10 +4,13 @@ on:
   workflow_dispatch:
      branches:
        - 'dev'
+  push:
+     - 'dev'
 
 jobs:
   update-elysia:
     runs-on: ubuntu-latest
+    if: forgejo.ref_name == 'master'
     permissions:
       contents: write
       pull-requests: write
