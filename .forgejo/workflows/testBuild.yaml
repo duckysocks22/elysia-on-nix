@@ -24,4 +24,4 @@ jobs:
         . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
   
     - name: Build Elysia
-      run: ls -la
+      run: nix build .#packages.x86_64-linux.default
