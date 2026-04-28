@@ -9,7 +9,7 @@ on:
 jobs:
   update-elysia:
     runs-on: ubuntu-latest
-    if: forgejo.ref_name == 'master'
+    if: github.ref_name == 'master' || github.event_name == 'workflow_dispatch'
     permissions:
       contents: write
       pull-requests: write
