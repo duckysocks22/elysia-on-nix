@@ -1,19 +1,22 @@
 on:
   push:
-    jobs:
-      build:
-        enable-email-notifications: true
-        permissions:
-          contents: read
-          id-token: read
-          issues: read
-          pull-requests: read
-        runs-on: ubuntu-latest
-        steps:
-        - run: |
-            apt update
-            apt install -y curl
-            curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | \
-            sh -s -- install --no-confirm --extra-conf "trusted-users = $(whoami)"
-            ls -la
+    branches:
+      - dev
+      
+jobs:
+  build:
+    enable-email-notifications: true
+    permissions:
+      contents: read
+      id-token: read
+      issues: read
+      pull-requests: read
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        apt update
+        apt install -y curl
+        curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | \
+        sh -s -- install --no-confirm --extra-conf "trusted-users = $(whoami)"
+        ls -la
         
