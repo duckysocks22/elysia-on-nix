@@ -1,7 +1,5 @@
 on:
   schedule:
-    branches:
-      - 'dev'
     - cron: '0 0 * * *'
     
   push:
