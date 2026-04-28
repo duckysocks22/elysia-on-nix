@@ -1,10 +1,14 @@
 on:
   schedule:
     - cron: '0 0 * * *'
+    branches:
+      - dev
   push:
+     branches:
+       - dev
   workflow_dispatch:
-  branch:
-    - dev
+     branches:
+       - dev
 
 jobs:
   update-elysia:
