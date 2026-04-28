@@ -33,9 +33,21 @@ jobs:
 
       - name: Update Nix File and Hash
         run: |
-          # Install nix-update temporarily
-          nix shell nixpkgs#nix-update --command \
-            nix-update --version "${{ steps.get_version.outputs.VERSION }}" --flake elysia
+          # 1. Get the new version and hash
+          NEW_VERSION="${{ steps.get_version.outputs.VERSION }}"
+          # Fetch the new SRI hash from the source URL
+          NEW_HASH=$(nix-prefetch-url --unpack https://dawn.wine/elysia/elysia/archive/v${NEW_VERSION}.tar.gz)
+          NEW_SRI_HASH=$(nix hash to-sri --type sha256 $NEW_HASH)
+
+          echo "Updating to $NEW_VERSION with hash $NEW_SRI_HASH"
+
+          # 2. Use sed to swap the values in your file
+          # Replace 'version = "...";' and 'hash = "...";'
+          sed -i "s/version = \".*\";/version = \"$NEW_VERSION\";/" elysia.nix
+          sed -i "s|hash = \".*\";|hash = \"$NEW_SRI_HASH\";|" elysia.nix
+          
+          # 3. Update the lockfile just in case
+          nix flake update
 
       - name: Verify Build
         run: nix build .#packages.x86_64-linux.default
