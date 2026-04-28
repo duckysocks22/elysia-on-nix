@@ -38,7 +38,7 @@ jobs:
           RAW_TAG=$(curl -s https://dawn.wine/api/v1/repos/elysia/elysia/releases/latest | jq -r .tag_name)
           CLEAN_VERSION=${RAW_TAG#v}
           
-          PREFETCH_JSON=$(nix run nixpkgs#nix-prefetch-git https://dawn.wine/elysia/elysia.git --rev "$RAW_TAG")
+          PREFETCH_JSON=$(nix run nixpkgs#nix-prefetch-git -- --url https://dawn.wine/elysia/elysia.git --rev "$RAW_TAG")
           COMMIT_HASH=$(echo $PREFETCH_JSON | jq -r .rev)
           SHA256=$(echo $PREFETCH_JSON | jq -r .sha256)
 
