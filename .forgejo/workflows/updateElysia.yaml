@@ -3,6 +3,8 @@ on:
     - cron: '0 0 * * *'
   push:
   workflow_dispatch:
+  branch:
+    - dev
 
 jobs:
   update-elysia:
@@ -57,7 +59,7 @@ jobs:
         run: |
           apt install -y git
           NEW_VER="${{ steps.get_version.outputs.VERSION }}"
-          BRANCH_NAME="update-elysia-v$NEW_VER"
+          BRANCH_NAME="dev"
 
           echo "Creating PR for elysia v$VERSION"
           
