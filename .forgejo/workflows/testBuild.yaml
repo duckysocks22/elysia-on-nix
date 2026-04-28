@@ -1,0 +1,27 @@
+on:
+  push:
+    branches:
+      - dev
+      
+jobs:
+  build:
+    permissions:
+      contents: write
+      id-token: write
+      issues: write
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Install Nix
+      run: |
+        apt update
+        apt install -y curl
+        curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | \
+        sh -s -- install --no-confirm --extra-conf "trusted-users = $(whoami)" "experimental-features = nix-command flakes"
+        . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+  
+    - name: Build Elysia
+      run: nix build .#packages.x86_64-linux.default
