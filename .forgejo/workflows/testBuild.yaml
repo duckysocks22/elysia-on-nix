@@ -7,10 +7,10 @@ jobs:
   build:
     enable-email-notifications: true
     permissions:
-      contents: read
-      id-token: read
-      issues: read
-      pull-requests: read
+      contents: write
+      id-token: write
+      issues: write
+      pull-requests: write
     runs-on: ubuntu-latest
     steps:
     - run: |
