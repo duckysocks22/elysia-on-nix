@@ -3,6 +3,7 @@ enable-email-notifications: true
 on:
   schedule:
     - cron: '0 0 * * *'
+      timezone: America/New_York
   workflow_dispatch:
 
 jobs:
@@ -55,12 +56,13 @@ jobs:
 
       - name: Create Pull Request
         env:
-          GITHUB_TOKEN: ${{ secrets.FORGEJO_TOKEN }}
+          TEA_TOKEN: ${{ secrets.FORGEJO_TOKEN }}
+          TEA_SERVER: "https://dawn.wine"
         run: |
-          apt install -y git
-          NEW_VER="${{ steps.get_version.outputs.VERSION }}"
+          apt install -y git jq
+          NEW_VER=$(curl -s https://dawn.wine/api/v1/repos/elysia/elysia/releases/latest | jq -r .tag_name)
           # Define the source for the PR
-          BRANCH_NAME="update-elysia-v$NEW_VER"
+          BRANCH_NAME="update-elysia-$NEW_VER"
 
           git config user.name "nix-bot"
           git config user.email "bot@puppygirls.net"
@@ -73,13 +75,20 @@ jobs:
               echo "No changes detected. Version is already current."
               exit 0
           else
+
+              git checkout -b "$BRANCH_NAME"
               git commit -m "chore: bump elysia to $NEW_VER"
               # Use --force to overwrite the remote update branch (Fixes image_ecd303.png)
               git push origin "$BRANCH_NAME" --force
     
               # 5. Create the PR using tea (Fixes image_ecc81a.png)
-              nix run nixpkgs#tea -- pr create \
-                --title "Bump Elysia to $NEW_VER" \
-                --description "Automated update for NixOS nodes." \
-                --head "$BRANCH_NAME" --base master
+              nix shell nixpkgs#tea -c sh -c "
+                tea login add --name dawn --url https://dawn.wine --token ${{ secrets.FORGEJO_TOKEN }}
+                tea pr create \
+                  --title \"Bump Elysia to $NEW_VER\" \
+                  --description \"Automated update for NixOS nodes.\" \
+                  --head \"$BRANCH_NAME\" \
+                  --base master \
+                  --login dawn
+              "
           fi
