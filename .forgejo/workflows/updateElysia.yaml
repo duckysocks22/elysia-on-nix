@@ -52,7 +52,7 @@ jobs:
           nix flake update
 
       - name: Verify Build
-        run: NIX_BUILD_CORES=4 nix build -L .
+        run: nix build -L .
 
       - name: Create Pull Request
         env:
