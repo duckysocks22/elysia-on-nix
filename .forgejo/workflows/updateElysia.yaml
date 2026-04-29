@@ -59,7 +59,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.FORGEJO_TOKEN }}
         run: |
           apt install -y git
-          NEW_VER=(curl -s https://dawn.wine/api/v1/repos/elysia/elysia/releases/latest | jq -r .tag_name)
+          NEW_VER="(curl -s https://dawn.wine/api/v1/repos/elysia/elysia/releases/latest | jq -r .tag_name)"
           # Define the source for the PR
           BRANCH_NAME="update-elysia-v$NEW_VER"
 
