@@ -48,8 +48,6 @@ jobs:
           sed -i "s/version = \".*\";/version = \"$CLEAN_VERSION\";/" ./modules/elysia.nix
           sed -i "s/rev = \".*\";/rev = \"$COMMIT_HASH\";/" ./modules/elysia.nix
           sed -i "s/sha256 = \".*\";/sha256 = \"$SHA256\";/" ./modules/elysia.nix
- 
-          nix flake update
 
       - name: Verify Build
         run: nix build -L .
