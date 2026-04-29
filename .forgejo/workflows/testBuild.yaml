@@ -27,7 +27,7 @@ jobs:
       run: |
         for i in {1..3}; do
             echo "Attempt $i..."
-            nix build -L --cores=4 .#packages.x86_64-linux.default && break || {
+            nix build -L .#packages.x86_64-linux.default && break || {
               if [ $i -lt 3 ]; then
                 echo "Build failed, retrying in 5 seconds..."
                 sleep 5
