@@ -25,11 +25,9 @@ jobs:
   
     - name: Build Elysia
       run: |
-        export NIX_BUILD_CORES=4
-        echo Current allocated cores=$NIX_BUILD_CORES
         for i in {1..3}; do
             echo "Attempt $i..."
-            nix build .#packages.x86_64-linux.default && break || {
+            nix build -L --cores=4 .#packages.x86_64-linux.default && break || {
               if [ $i -lt 3 ]; then
                 echo "Build failed, retrying in 5 seconds..."
                 sleep 5
