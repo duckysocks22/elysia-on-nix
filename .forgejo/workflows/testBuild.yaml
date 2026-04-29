@@ -24,9 +24,9 @@ jobs:
         . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
   
     - name: Build Elysia
-      env: |
-        NIX_BUILD_CORES=4
       run: |
+        export NIX_BUILD_CORES=4
+        echo Current allocated cores=$NIX_BUILD_CORES
         for i in {1..3}; do
             echo "Attempt $i..."
             nix build .#packages.x86_64-linux.default && break || {
