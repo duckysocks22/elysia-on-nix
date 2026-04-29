@@ -64,8 +64,8 @@ jobs:
           # Define the source for the PR
           BRANCH_NAME="update-elysia-$NEW_VER"
 
-          git config user.name "nix-bot"
-          git config user.email "bot@puppygirls.net"
+          git config user.name "silverwolf"
+          git config user.email "silverwolf@puppygirls.net"
 
           git add modules/elysia.nix flake.lock
 
@@ -86,7 +86,7 @@ jobs:
                 tea login add --name dawn --url https://dawn.wine --token ${{ secrets.FORGEJO_TOKEN }}
                 tea pr create \
                   --title \"Bump Elysia to $NEW_VER\" \
-                  --description \"Automated update for NixOS nodes.\" \
+                  --description \"Automated update for elysia-on-nix.\" \
                   --head \"$BRANCH_NAME\" \
                   --base master \
                   --login dawn
