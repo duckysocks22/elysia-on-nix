@@ -85,9 +85,10 @@ jobs:
               nix shell nixpkgs#tea -c sh -c "
                 tea login add --name dawn --url https://dawn.wine --token ${{ secrets.FORGEJO_TOKEN }}
                 tea pr create \
-                  --title "Bump Elysia to $NEW_VER" \
-                  --description "Automated update for NixOS nodes." \
-                  --head "$BRANCH_NAME"
-                  --base master
+                  --title \"Bump Elysia to $NEW_VER\" \
+                  --description \"Automated update for NixOS nodes.\" \
+                  --head \"$BRANCH_NAME\" \
+                  --base master \
+                  --login dawn
               "
           fi
