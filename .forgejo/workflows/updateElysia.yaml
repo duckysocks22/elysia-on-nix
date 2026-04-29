@@ -56,12 +56,13 @@ jobs:
 
       - name: Create Pull Request
         env:
-          GITHUB_TOKEN: ${{ secrets.FORGEJO_TOKEN }}
+          TEA_TOKEN: ${{ secrets.FORGEJO_TOKEN }}
+          TEA_SERVER: "https://dawn.wine"
         run: |
           apt install -y git jq
           NEW_VER=$(curl -s https://dawn.wine/api/v1/repos/elysia/elysia/releases/latest | jq -r .tag_name)
           # Define the source for the PR
-          BRANCH_NAME="update-elysia-v$NEW_VER"
+          BRANCH_NAME="update-elysia-$NEW_VER"
 
           git config user.name "nix-bot"
           git config user.email "bot@puppygirls.net"
@@ -84,5 +85,6 @@ jobs:
               nix run nixpkgs#tea -- pr create \
                 --title "Bump Elysia to $NEW_VER" \
                 --description "Automated update for NixOS nodes." \
-                --head "$BRANCH_NAME" --base master
+                --head "$BRANCH_NAME"
+                --base master
           fi
