@@ -51,7 +51,7 @@ jobs:
 
       - name: Verify Build
         run: |
-          CARGO_BUILD_JOBS=4
+          export CARGO_BUILD_JOBS=4
           nix build -L .
 
       - name: Create Pull Request
