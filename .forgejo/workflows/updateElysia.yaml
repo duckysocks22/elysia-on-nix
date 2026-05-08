@@ -50,7 +50,9 @@ jobs:
           sed -i "s/sha256 = \".*\";/sha256 = \"$SHA256\";/" ./modules/elysia.nix
 
       - name: Verify Build
-        run: nix build -L .
+        run: |
+          CARGO_BUILD_JOBS=4
+          nix build -L .
 
       - name: Create Pull Request
         env:
