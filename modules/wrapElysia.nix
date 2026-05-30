@@ -1,8 +1,8 @@
-{ fenixLib, skiaBinaries, buildFHSEnv, alsa-lib, git, gnutls, mangohud, nss_latest, p7zip, xdelta, unzip, libwebp, imagemagick, python3, glibc, llvmPackages_latest, libX11, libXcursor, libXrandr, udev, libunwind, callPackage, lib, graphicsmagick }:
+{ fenixLib, skiaBinaries, buildFHSEnv, alsa-lib, git, gnutls, mangohud, nss_latest, p7zip, xdelta, unzip, libwebp, imagemagick, python3, glibc, llvmPackages_latest, libX11, libXcursor, libXrandr, udev, libunwind, callPackage, lib, graphicsmagick, ffmpeg_6 }:
 
 
 let
-  elysia = callPackage ./elysia.nix { inherit fenixLib; inherit skiaBinaries; };
+  elysia = callPackage ./elysia.nix { inherit fenixLib; inherit skiaBinaries; ffmpeg = ffmpeg_6; };
 in
 
 (buildFHSEnv {
