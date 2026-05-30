@@ -22,7 +22,7 @@ Add the following to your flake.nix inputs
 ```
 elysia = {
   url = "git+https://dawn.wine/foxtrottt/elysia-on-nix/";
-  inputs.nixpkgs.follows = "nixpkgs";
+  # url = "git+https://dawn.wine/foxtrottt/elysia-on-nix.git?reg=25.11" for NixOS 25.11
 };
 ```
 Then add the following
