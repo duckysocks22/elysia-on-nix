@@ -1,4 +1,4 @@
-{ rustPlatform, rust, fenixLib, cargo, rustc, rustfmt, clippy, rust-analyzer, openssl, ffmpeg, llvmPackages_latest, freetype, fontconfig, libGL, libglvnd, wayland, wayland-protocols, libxkbcommon, libX11, libXcursor, libXrandr, libXi, xorg, pkg-config, python3, skia, glibc, makeWrapper , vulkan-validation-layers, vulkan-loader, skiaBinaries, lib, fetchgit, alsa-lib }:
+{ rustPlatform, rust, fenixLib, cargo, rustc, rustfmt, clippy, rust-analyzer, openssl, ffmpeg, llvmPackages_latest, freetype, fontconfig, libGL, libglvnd, wayland, wayland-protocols, libxkbcommon, libX11, libXcursor, libXrandr, libXi, pkg-config, python3, skia, glibc, makeWrapper , vulkan-validation-layers, vulkan-loader, skiaBinaries, lib, fetchgit, alsa-lib }:
 
   rustPlatform.buildRustPackage {
         name = "elysia";
@@ -16,7 +16,7 @@
 
 	cargoHash = "sha256-dbiSRDA8Arm6/GlCXmiXdsQwpd0tZy53+ok2/JMINBc=";
 
-        buildInputs = [ cargo rustc rustfmt clippy rust-analyzer openssl ffmpeg llvmPackages_latest.clang llvmPackages_latest.libclang freetype fontconfig libGL libglvnd wayland wayland-protocols libxkbcommon ffmpeg xorg.libX11 xorg.libXcursor xorg.libXrandr xorg.libXi alsa-lib ];
+        buildInputs = [ cargo rustc rustfmt clippy rust-analyzer openssl ffmpeg llvmPackages_latest.clang llvmPackages_latest.libclang freetype fontconfig libGL libglvnd wayland wayland-protocols libxkbcommon ffmpeg libX11 libXcursor libXrandr libXi alsa-lib ];
         nativeBuildInputs = [ pkg-config python3 skia ffmpeg glibc makeWrapper ];
 
         cargoBuildFlags = [ "--bin" "elysia" ];
@@ -36,10 +36,10 @@
               vulkan-loader
               fontconfig
               freetype
-	      xorg.libX11
-	      xorg.libXcursor
-	      xorg.libXrandr
-	      xorg.libXi
+	      libX11
+	      libXcursor
+	      libXrandr
+	      libXi
 	      ])}"
         '';
 
