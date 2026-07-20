@@ -27,7 +27,6 @@
 
         postInstall = ''
 	  wrapProgram $out/bin/elysia \
-	    --set WAYLAND_DISPLAY "$WAYLAND_DISPLAY" \
             --prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath ([
               wayland
               libxkbcommon
