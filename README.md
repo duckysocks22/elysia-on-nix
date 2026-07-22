@@ -6,7 +6,7 @@
 
 <img src="assets/pictures/ak-e.png" alt="Launcher" width="600"/>
 
-> ⚠️ Elysia is still in very early development! Please report any issues. ⚠️
+> ⚠️ ELYSIA IS CURRENTLY GOING UNDER A MASSIVE REWRITE. Some features may not be properly functional. ⚠️
 
 > ⚠️ This specific package is community managed ⚠️
 
