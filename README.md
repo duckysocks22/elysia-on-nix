@@ -6,7 +6,9 @@
 
 <img src="assets/pictures/ak-e.png" alt="Launcher" width="600"/>
 
-> ⚠️ ELYSIA IS CURRENTLY GOING UNDER A MASSIVE REWRITE. Some features may not be properly functional. ⚠️
+> ⚠️ ELYSIA IS CURRENTLY GOING UNDER A MASSIVE REWRITE. ⚠️
+
+> Some features may not be properly functional.
 
 > ⚠️ This specific package is community managed ⚠️
 
